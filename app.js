@@ -23,6 +23,7 @@
     if (preloader.classList.contains('done')) return;
     preloader.classList.add('done');
     document.body.style.overflow = '';
+    document.body.style.overflowX = 'hidden';
     startHeroIntro();
   }
 
@@ -139,11 +140,12 @@
      5. LENIS SMOOTH SCROLL
   ========================================================= */
   let lenis = null;
-  if (!reduceMotion && window.Lenis) {
+  if (!reduceMotion && !isTouch && window.Lenis) {
     lenis = new window.Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      smoothTouch: false,
     });
     window.__lenis = lenis;
     function raf(time) {

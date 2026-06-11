@@ -1341,5 +1341,44 @@ document.querySelectorAll(".filter").forEach(btn => {
 })();
 </script>
 
+<script>
+/* Mobile scroll safety — runs after all other scripts */
+(function () {
+  /* On touch devices, Lenis is disabled (see app.js isTouch check).
+     This script just makes sure body scroll is always restored
+     after the preloader finishes, and overflow-x stays hidden. */
+  var isTouch = window.matchMedia('(hover: none)').matches;
+  if (!isTouch) return;
+
+  function restoreScroll() {
+    document.body.style.overflow = '';
+    document.body.style.overflowY = 'auto';
+    document.body.style.overflowX = 'hidden';
+    document.documentElement.style.overflowY = 'auto';
+    document.documentElement.style.overflowX = 'hidden';
+  }
+
+  /* Trigger on preloader hide */
+  var pl = document.getElementById('preloader');
+  if (pl) {
+    var mo = new MutationObserver(function () {
+      if (pl.classList.contains('done')) {
+        restoreScroll();
+        mo.disconnect();
+      }
+    });
+    mo.observe(pl, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* Hard fallback after 5s no matter what */
+  setTimeout(restoreScroll, 5000);
+
+  /* Also restore after window load */
+  window.addEventListener('load', function () {
+    setTimeout(restoreScroll, 300);
+  });
+})();
+</script>
+
 </body>
 </html>
