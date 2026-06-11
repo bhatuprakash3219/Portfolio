@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prakash Bhatu — Designer · Frontend · Creative Technologist</title>
+<meta name="description" content="Prakash Bhatu — multidisciplinary digital designer & frontend developer. UI/UX, motion, and immersive web experiences." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+
+<!-- Fonts: Clash Display + Inter + JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<style>
+  .hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1; /* ताकि यह बैकग्राउंड में रहे और कंटेंट इसके ऊपर दिखे */
+  pointer-events: none; /* अगर आप चाहते हैं कि नीचे के बटन पर क्लिक हो सके */
+}
+
+/* सुनिश्चित करें कि पैरेंट यानी .hero रिलेटिव हो */
+.hero {
+  position: relative;
+  overflow: hidden;
+  /* बाकी की प्रॉपर्टीज वैसी ही रहने दें */
+}
+
+
+/* new project css */
+/* ================= WORK SECTION ================= */
+
+:root {
+  /* Surfaces */
+  --ink-000: #050506;
+  --ink-050: #0a0a0c;
+  --ink-100: #0f0f12;
+  --ink-200: #14141a;
+  --ink-300: #1c1c24;
+  --ink-400: #262630;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  /* Text */
+  --text-100: #f5f5f7;
+  --text-200: #c7c7cf;
+  --text-300: #8a8a96;
+  --text-400: #5a5a66;
+
+  /* Accents (tweakable) */
+  --accent: #4d7cfe;
+  --accent-2: #8b5cf6;
+  --accent-glow: rgba(77, 124, 254, 0.45);
+  --accent-2-glow: rgba(139, 92, 246, 0.35);
+
+  /* Type */
+  --font-display: "Space Grotesk", "Helvetica Neue", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Layout */
+  --page-pad: clamp(24px, 4vw, 72px);
+  --maxw: 1440px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 36px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter {
+  font-size: 13px;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text-300);
+  background: transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.filter:hover {
+  color: var(--text-100);
+  border-color: var(--line-strong);
+}
+
+.filter.active {
+  background: white;
+  color: var(--ink-000);
+  border-color: white;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.work-card {
+  height: fit-content;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--ink-100);
+  border: 1px solid var(--line);
+  transition: transform 0.5s var(--ease-out);
+}
+
+.work-card:hover {
+  transform: translateY(-6px);
+}
+
+.work-card .thumb {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-200);
+}
+
+.work-card .thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255,255,255,0.025) 0 12px,
+    transparent 12px 24px
+  );
+}
+
+.work-card .thumb-art {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-400);
+}
+
+/* Layout */
+.w-feature { grid-column: span 12; }
+.w-feature .thumb { aspect-ratio: 16/7; }
+
+.w-half { grid-column: span 6; }
+.w-third { grid-column: span 4; }
+.w-twothird { grid-column: span 8; }
+
+@media (max-width: 820px) {
+  .w-feature,
+  .w-half,
+  .w-third,
+  .w-twothird {
+    grid-column: span 12;
+  }
+}
+
+/* Meta */
+.work-card .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 22px 22px;
+}
+
+.work-card .meta h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.work-card .meta .cat {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  margin-top: 6px;
+}
+
+.work-card .meta .case {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-300);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.work-card .meta .case::after {
+  content: "→";
+  transition: transform 0.3s;
+}
+
+.work-card:hover .meta .case::after {
+  transform: translateX(4px);
+}
+
+/* Thumb styles (simple placeholders) */
+.thumb-art.t-mobile { background: #0d2237; }
+.thumb-art.t-dash { background: #0a0f1c; }
+.thumb-art.t-brand { background: #ece9e2; color: #1c1c20; }
+.thumb-art.t-web { background: #1a0d2e; }
+.thumb-art.t-video { background: #000; }
+.thumb-art.t-motion { background: #0a0a14; }
+
+/* ===== Work case-study modal (self-contained, namespaced) ===== */
+.kv-cs {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 40px var(--page-pad);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  opacity: 0; transition: opacity 0.35s;
+  font-family: var(--font-body); color: var(--text-100);
+}
+.kv-cs.open { display: flex; opacity: 1; }
+.kv-cs-inner {
+  max-height: 600px;
+  overflow-y: auto;
+  width: min(820px, 100%); background: var(--ink-050);
+  border: 1px solid var(--line); border-radius: var(--radius-xl);
+  padding: 48px 52px; position: relative;
+  flex-shrink: 0;
+  transform: translateY(18px); transition: transform 0.45s var(--ease-out);
+}
+.kv-cs.open .kv-cs-inner { transform: translateY(0); }
+.kv-cs-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  color: var(--text-100); font-size: 20px; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+}
+.kv-cs-close:hover { background: rgba(255,255,255,0.12); }
+.kv-cs-cat {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+}
+.kv-cs-title {
+  font-family: var(--font-display); font-size: clamp(28px, 4vw, 48px);
+  letter-spacing: -0.03em; line-height: 1.02; font-weight: 500; margin-bottom: 18px;
+}
+.kv-cs-tagline { color: var(--text-300); font-size: 16px; max-width: 60ch; line-height: 1.6; }
+.kv-cs-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line);
+  margin-bottom: 36px;
+}
+.kv-cs-stats .k {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-400); margin-bottom: 8px;
+}
+.kv-cs-stats .v {
+  font-family: var(--font-display); font-size: 18px; font-weight: 500; letter-spacing: -0.01em;
+}
+@media (max-width: 600px) {
+  .kv-cs-stats { grid-template-columns: repeat(2, 1fr); }
+  .kv-cs-inner { padding: 32px; }
+}
+.case-image-wrap{
+  margin:20px 0 30px;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.case-image{
+  width:100%;
+  display:block;
+  border-radius:16px;
+}
+
+/* Heading */
+.kv-cs-inner h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 18px 0 10px;
+  color: #ffffff;
+}
+
+/* Paragraph */
+.kv-cs-inner p {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #cfcfcf;
+}
+
+/* List */
+.kv-cs-inner ul {
+  padding-left: 18px;
+  margin-bottom: 12px;
+}
+
+.kv-cs-inner li {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #cfcfcf;
+}
+
+/* Links */
+.kv-cs-inner a {
+  color: #4da3ff;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.kv-cs-inner a:hover {
+  color: #80c1ff;
+  text-decoration: underline;
+}
+
+/* -------- RESPONSIVE -------- */
+@media (max-width: 768px) {
+  .kv-cs-inner {
+    padding: 18px;
+  }
+
+  .kv-cs-inner h3 {
+    font-size: 18px;
+  }
+
+  .kv-cs-inner p,
+  .kv-cs-inner li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kv-cs-inner {
+    padding: 14px;
+    border-radius: 8px;
+  }
+
+  .kv-cs-inner h3 {
+    font-size: 16px;
+  }
+
+  .kv-cs-inner p,
+  .kv-cs-inner li {
+    font-size: 13px;
+  }
+}
+.cursor {
+  position: fixed;
+  z-index: 100000;
+  pointer-events: none;
+}
+
+.cursor-ring {
+  position: fixed;
+  z-index: 99999;
+  pointer-events: none;
+}
+.kv-cs-inner::-webkit-scrollbar {
+  width: 6px;
+}
+.kv-cs-inner::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+/* Contact Form Responsive */
+.contact-form {
+  width: 100%;
+  max-width: 100%;
+  padding: 32px;
+}
+
+.contact-form .row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-width: 0;
+}
+
+.budget-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.budget-chips label {
+  flex: 1 1 calc(50% - 10px);
+  text-align: center;
+  min-width: 120px;
+}
+
+.form-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-foot .btn {
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 24px;
+  }
+
+  .contact-form .row {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-chips label {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .form-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-foot .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .contact-form {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    padding: 12px 14px;
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  .budget-chips {
+    flex-direction: column;
+  }
+
+  .budget-chips label {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .form-foot small {
+    text-align: center;
+    width: 100%;
+  }
+
+  .form-foot .btn {
+    width: 100%;
+  }
+  .hero-aside{
+    grid-template-columns:repeat(2, 1fr);
+    margin-top: 0;
+  }
+}
+
+</style>
+
+<!-- Custom cursor + smooth scroll + GSAP + Three.js loaded as modules at end -->
+</head>
+<body>
+
+<!-- ========== Preloader ========== -->
+<div class="preloader" id="preloader">
+  <div class="pl-inner">
+    <div class="pl-mark"></div>
+    <div class="pl-progress"><div class="pl-bar" id="plBar"></div></div>
+    <div class="pl-text" id="plText">Loading experience · 0%</div>
+  </div>
+</div>
+
+<!-- ========== Cursor ========== -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor" id="cursor"></div>
+
+<!-- ========== Nav ========== -->
+<nav class="nav" aria-label="Primary">
+  <a class="brand" href="#top" data-cursor="hover">
+    <span class="mark" aria-hidden="true"></span>
+    <span>Prakash Bhatu</span>
+  </a>
+  <ul>
+    <li><a class="link" href="#work" data-cursor="hover">Work</a></li>
+    <li><a class="link" href="#about" data-cursor="hover">About</a></li>
+    <li><a class="link" href="#services" data-cursor="hover">Services</a></li>
+    <li><a class="link" href="#journey" data-cursor="hover">Journey</a></li>
+    <li><a class="link" href="#contact" data-cursor="hover">Contact</a></li>
+  </ul>
+  <span class="availability"><span class="dot"></span>Available</span>
+</nav>
+
+<main class="page" id="top">
+
+<!-- ========== Hero ========== -->
+<section class="hero" data-screen-label="01 Hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-orb" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero-grid">
+      <span class="eyebrow reveal-fade">Portfolio · 2026 · Mumbai → Worldwide</span>
+
+      <h1 class="display reveal-fade" id="heroHeadline">
+        <span class="word"><span>Designing</span></span>
+        <span class="word"><span>modern</span></span>
+        <span class="word"><span>digital</span></span><br/>
+        <span class="word"><span>experiences</span></span>
+        <span class="word"><span>that</span></span>
+        <span class="word"><span><span class="accent">feel</span></span></span>
+        <span class="word"><span class="alive"><span><span class="accent">alive</span>.</span></span></span>
+      </h1>
+
+      <div class="reveal-up">
+        <div class="hero-roles">
+          <span class="role-chip"><span class="ico"></span>UI / UX Designer</span>
+          <span class="role-chip"><span class="ico"></span>Frontend Developer</span>
+          <span class="role-chip"><span class="ico"></span>Motion · Creative Tech</span>
+        </div>
+
+        <div class="hero-cta">
+          <a href="#work" class="btn glow btn-magnet" data-cursor="hover">
+            View selected work
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+          <a href="#contact" class="btn ghost btn-magnet" data-cursor="hover">
+            Hire me
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-aside reveal-up">
+        <div class="hero-stat">
+          <div class="n">3<span style="color:var(--accent-3)">+</span></div>
+          <div class="l">Years crafting</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">15+</div>
+          <div class="l">Shipped projects</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">7</div>
+          <div class="l">Industries</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ========== Marquee strip ========== -->
+<div class="strip" aria-hidden="true">
+  <div class="strip-track">
+<span>
+  UI/UX Design <span class="dot-sep">✦</span>
+  Figma Design Systems <span class="dot-sep">✦</span>
+  Frontend Development <span class="dot-sep">✦</span>
+  HTML & CSS <span class="dot-sep">✦</span>
+  Bootstrap & Tailwind CSS <span class="dot-sep">✦</span>
+  Shopify Development <span class="dot-sep">✦</span>
+</span>
+
+<span>
+  Responsive Web Design <span class="dot-sep">✦</span>
+  User Research <span class="dot-sep">✦</span>
+  Wireframing & Prototyping <span class="dot-sep">✦</span>
+  Motion Design <span class="dot-sep">✦</span>
+  After Effects <span class="dot-sep">✦</span>
+  Premiere Pro <span class="dot-sep">✦</span>
+</span>
+  </div>
+</div>
+
+<!-- ========== About ========== -->
+<section id="about" data-screen-label="02 About">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="num">— 01 / About</span>
+        <h2 class="display reveal-up" style="margin-top:18px">A designer who <em style="font-weight:400; font-style:italic; background:linear-gradient(135deg,var(--accent-3),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">codes the things</em> he draws.</h2>
+      </div>
+      <div class="meta reveal-fade">
+        Three years of crafting user-focused digital experiences through thoughtful design and frontend development.
+ </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy">
+
+      <p>I'm Prakash  a  UI/UX Designer & Frontend Developer passionate about creating intuitive, user-centered digital experiences. I believe great design is not just about aesthetics, but about solving real user problems through thoughtful design decisions.</p>
+       <p>Over the past three years, I've worked on a variety of projects ranging from healthcare platforms and business websites to Shopify stores and web applications. My journey started at IGEX Solutions, where I built production-ready interfaces and strengthened my foundation in design and frontend development.</p>
+       <p>Today, I focus on crafting seamless user experiences using Figma, while bringing designs to life with HTML, CSS, Bootstrap, Tailwind CSS, and Shopify. I enjoy bridging the gap between design and development to create products that are both visually appealing and highly functional.</p>
+       <p>My goal is simple — design experiences that users love and build interfaces that businesses can trust.</p>
+
+
+
+        </div>
+
+      <aside class="about-card reveal-up" style="position: sticky; top: 0;">
+        <div class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="av-g" cx="35%" cy="30%">
+                <stop offset="0%" stop-color="#00F5D4"/>
+                <stop offset="40%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#050816"/>
+              </radialGradient>
+              <linearGradient id="av-rim" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00F5D4" stop-opacity=".6"/>
+                <stop offset="1" stop-color="#7C3AED" stop-opacity=".4"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="86" fill="url(#av-g)"/>
+            <circle cx="100" cy="100" r="86" fill="none" stroke="url(#av-rim)" stroke-width="1"/>
+            <g opacity="0.4" stroke="#fff" stroke-width="0.5" fill="none">
+              <ellipse cx="100" cy="100" rx="76" ry="30" transform="rotate(-18 100 100)"/>
+              <ellipse cx="100" cy="100" rx="76" ry="30" transform="rotate(18 100 100)"/>
+              <ellipse cx="100" cy="100" rx="76" ry="30" transform="rotate(60 100 100)"/>
+            </g>
+            <text x="100" y="116" text-anchor="middle" font-family="Clash Display" font-size="64" font-weight="600" fill="#fff" opacity="0.95">PB</text>
+          </svg>
+        </div>
+        <div class="row"><span class="k">Based in</span><span class="v">Ahmedabad, India — Available for Remote Work Worldwide</span></div>
+        <div class="row"><span class="k">Languages</span><span class="v">English · Hindi · Gujarati</span></div>
+        <div class="row"><span class="k">Toolbox</span><span class="v">Figma · HTML/CSS</span></div>
+        <div class="row"><span class="k">Focus</span><span class="v">UI/UX Design · Frontend Development · Shopify</span></div>
+        
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Skills ========== -->
+<section id="skills" data-screen-label="03 Skills">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="num">— 02 / Capabilities</span>
+        <h2 class="display reveal-up" style="margin-top:18px">A toolkit that<br/>spans the full stack <em style="font-weight:400; font-style:italic; background:linear-gradient(135deg,var(--accent-3),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">of craft</em>.</h2>
+      </div>
+      <div class="meta reveal-fade">
+        I design in Figma, but I never stop there. Every prototype I make can be shipped — and every interface I ship was prototyped with intention.
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      <article class="skill-card feature reveal-up" data-tilt>
+        <div>
+          <span class="cat">01 — Discipline</span>
+          <h3 class="display" style="margin-top:14px">Interface &amp; experience design</h3>
+          <p class="desc">Information architecture, interaction systems, design tokens, and component libraries that scale from MVP to enterprise.</p>
+        </div>
+        <div class="pill-row">
+          <span class="pill"><span class="led"></span>Figma</span>
+          <span class="pill"><span class="led"></span>Design systems</span>
+          <span class="pill"><span class="led"></span>Prototyping</span>
+          <span class="pill"><span class="led"></span>User flows</span>
+        </div>
+      </article>
+
+      <article class="skill-card reveal-up" data-tilt>
+        <span class="cat">02 — Discipline</span>
+        <h3 class="display" style="margin-top:14px">Frontend<br/>engineering</h3>
+        <div class="pill-row">
+          <span class="pill"><span class="led"></span>HTML</span>
+          <span class="pill"><span class="led"></span>CSS</span>
+          <span class="pill"><span class="led"></span>JavaScript</span>
+          <span class="pill"><span class="led"></span>React</span>
+        </div>
+      </article>
+
+      <article class="skill-card reveal-up" data-tilt>
+        <span class="cat">03 — Discipline</span>
+        <h3 class="display" style="margin-top:14px">Motion &amp; interaction</h3>
+        <div class="skill-viz" aria-hidden="true">
+          <svg viewBox="0 0 300 120" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="sv1" x1="0" x2="1">
+                <stop offset="0" stop-color="#00F5D4"/>
+                <stop offset="1" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,90 C40,90 50,30 90,30 C130,30 140,80 180,80 C220,80 230,40 270,40 L300,40" fill="none" stroke="url(#sv1)" stroke-width="1.5"/>
+            <path d="M0,90 C40,90 50,30 90,30 C130,30 140,80 180,80 C220,80 230,40 270,40 L300,40" fill="none" stroke="white" stroke-width="0.4" opacity="0.4"/>
+            <circle cx="90" cy="30" r="3" fill="#00F5D4"/>
+            <circle cx="180" cy="80" r="3" fill="#7C3AED"/>
+            <circle cx="270" cy="40" r="3" fill="#06B6D4"/>
+          </svg>
+        </div>
+        <div class="pill-row">
+          <span class="pill"><span class="led"></span>GSAP</span>
+         
+        </div>
+      </article>
+
+      <article class="skill-card reveal-up" data-tilt>
+        <span class="cat">04 — Discipline</span>
+        <h3 class="display" style="margin-top:14px">E-commerce &amp; CMS</h3>
+        <p class="desc">From hand-coded headless storefronts to Elementor builds — picking the right tool for the project, not the resume.</p>
+        <div class="pill-row">
+          <span class="pill"><span class="led"></span>Shopify</span>
+          <span class="pill"><span class="led"></span>WordPress</span>
+          <span class="pill"><span class="led"></span>Elementor</span>
+        </div>
+      </article>
+
+      <article class="skill-card wide reveal-up" data-tilt>
+        <span class="cat">05 — Discipline</span>
+        <h3 class="display" style="margin-top:14px">Post-production &amp; visual storytelling</h3>
+        <p class="desc">Reels, product films, on-site explainer motion. I write the script, animate it, color it, and finish it.</p>
+        <div class="pill-row">
+          <span class="pill"><span class="led"></span>After Effects</span>
+          <span class="pill"><span class="led"></span>Premiere Pro</span>
+          <span class="pill"><span class="led"></span>Photoshop</span>
+          <span class="pill"><span class="led"></span>Illustrator</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== WORK ==================== -->
+<section id="work" data-screen-label="04 Work">
+  <div class="container">
+  <div class="section-head reveal">
+    <div>
+      <span class="eyebrow">Selected work / 03</span>
+      <h2>Pieces I'm <em>proud&nbsp;of</em>.</h2>
+    </div>
+    <p>A small set of recent projects across product, brand and film. Click a card for the case study.</p>
+  </div>
+
+  <div class="filters reveal">
+    <button class="filter active" data-cat="all">All work</button>
+    <button class="filter" data-cat="mobile">Mobile</button>
+    <button class="filter" data-cat="web">Website</button>
+    <button class="filter" data-cat="dash">Dashboard</button>
+    <button class="filter" data-cat="brand">Branding</button>
+    <button class="filter" data-cat="video">Video</button>
+    <button class="filter" data-cat="motion">Motion</button>
+  </div>
+
+  <div class="work-grid reveal-stagger">
+    <!-- Feature -->
+    <div class="work-card w-feature" data-case="pmsweb" data-cat="dash">
+      <div class="thumb">
+        <div class="thumb-art t-dash" style="background-color: #000000;">
+          <img src="assets/images/desktop-admin.png" style="width: 100%;" alt="">
+        </div>
+      </div>
+      <div class="meta">
+        <div>
+          <h3>Practice Management System (PMS) Redesign</h3>
+          <div class="cat">Web Application (Admin + Medical Staff Dashboard)</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+
+    <!-- Two halves -->
+    <div class="work-card w-half" data-case="pmsapp" data-cat="mobile">
+        <div class="thumb">
+        <div class="thumb-art t-dash" style="background-color: #000000;">
+          <img src="assets/images/mobile-app-pms.png" style="height: 100%; object-fit: cover;" alt="">
+        </div>
+      </div>
+      <div class="meta">
+        <div>
+          <h3>Practice Management System (PMS) Design</h3>
+          <div class="cat">Web Application (Admin + Medical Staff Dashboard)</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+    <div class="work-card w-half" data-case="grove" data-cat="brand">
+    <div class="thumb">
+        <div class="thumb-art t-dash" style="background-color: #000000;">
+          <img src="assets/images/banner-post.png" style="width: 100%;" alt="">
+        </div>
+      </div>
+      <div class="meta">
+        <div>
+          <h3>Selected Brands — Identity & Logo Work</h3>
+          <div class="cat">Brand identity · 2024</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+
+    <!-- 2-third + third -->
+    <div class="work-card w-twothird" data-case="flyfi" data-cat="mobile">
+     <div class="thumb">
+        <div class="thumb-art t-dash" style="background-color: #000000;">
+          <img src="assets/images/flyfi_app_8.png" style="height: 100%;" alt="">
+        </div>
+      </div>
+      <div class="meta">
+        <div>
+          <h3>FlyFi Mobile App Design</h3>
+          <div class="cat">Mobile App Design</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+    
+    <div class="work-card w-third" data-case="halo" data-cat="motion">
+       <div class="thumb">
+  <video class="thumb-video" autoplay muted loop playsinline style="width: 100%;">
+    <source src="assets/Videos/logo-2.mp4"  type="video/mp4">
+  </video>
+</div>
+      <div class="meta">
+        <div>
+          <h3>IGEX Solutions — Identity in Motion</h3>
+          <div class="cat">Motion · 12s loop</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+    
+
+    <!-- third + 2-third -->
+    <div class="work-card w-third" data-case="vesper" data-cat="video">
+      <div class="thumb">
+  <video class="thumb-video" autoplay muted loop playsinline style="width: 100%;">
+    <source src="assets/Videos/Design-website.mp4"  type="video/mp4">
+  </video>
+</div>
+      <div class="meta">
+        <div>
+          <h3>Design Compilation — Selected Projects</h3>
+          <div class="cat">Video · 0:48</div>
+        </div>
+        <span class="case">Watch</span>
+      </div>
+    </div>
+
+    <div class="work-card w-twothird" data-case="drift" data-cat="web">
+     <div class="thumb">
+        <div class="thumb-art t-dash" style="background-color: #000000;">
+          <img src="assets/images/transcript-web.png" style="width: 100%;" alt="">
+        </div>
+      </div>
+      <div class="meta">
+        <div>
+          <h3>iTranscript360 Website Redesign</h3>
+          <div class="cat">Dashboard · 2025</div>
+        </div>
+        <span class="case">Case study</span>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+
+<!-- ========== Timeline ========== -->
+<section id="journey" data-screen-label="05 Journey">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="num">— 04 / Journey</span>
+        <h2 class="display reveal-up" style="margin-top:18px">The shape of<br/>three <em style="font-weight:400; font-style:italic; background:linear-gradient(135deg,var(--accent-3),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">deliberate</em> years.</h2>
+      </div>
+      <div class="meta reveal-fade">
+        Two roles. Dozens of projects. One throughline — designing things, then making sure they actually ship.
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="timeline-progress" id="tlProgress"></div>
+
+      <div class="tl-item reveal-up">
+        <div class="row">
+          <span class="year">2022 — 2024</span>
+          <div>
+            <h3 class="display">IGEX Solutions</h3>
+            <div class="role">UI/UX &amp; Frontend Designer · Two years</div>
+            <p class="desc">Joined fresh and grew into a production designer. Owned UI for half a dozen client products — fintech dashboards, healthcare portals, e-commerce storefronts. Spent the second year coding what I designed.</p>
+            <div class="tags">
+              <span class="pill">Figma</span><span class="pill">HTML / CSS</span><span class="pill">JavaScript</span><span class="pill">WordPress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item now reveal-up">
+        <div class="row">
+          <span class="year">2024 — Current</span>
+          <div>
+            <h3 class="display">BirajTech Services</h3>
+            <div class="role">UI/UX Designer &amp; Frontend Developer</div>
+            <p class="desc">Leading the design+frontend pillar — taking briefs from zero to shipped. Mostly building motion-rich marketing sites, dashboards, and Shopify storefronts. This is where I picked up GSAP and Three.js seriously.</p>
+            <div class="tags">
+              <span class="pill">UI Systems</span><span class="pill">GSAP</span><span class="pill">Three.js</span><span class="pill">Shopify</span><span class="pill">Motion</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal-up">
+        <div class="row">
+          <span class="year">Next</span>
+          <div>
+            <h3 class="display">Open to New Opportunities </h3>
+            <div class="role">Product design + creative engineering teams · Worldwide</div>
+            <p class="desc">Currently available for remote, freelance, and full-time roles. Interested in
+working with ambitious startups, agencies, and product teams building meaningful
+digital experiences.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Services ========== -->
+<section id="services" data-screen-label="06 Services">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="num">— 05 / Services</span>
+        <h2 class="display reveal-up" style="margin-top:18px">What I can<br/>build for you.</h2>
+      </div>
+      <div class="meta reveal-fade">
+       I take on a limited number of projects at a time — working solo or embedded with your in-house team, on fixed scope or retainer basis.
+      </div>
+    </div>
+
+    <div class="services-grid">
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">01</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+        <div>
+          <h3 class="display">UI / UX Design</h3>
+          <p>Product interfaces, design systems, marketing sites — from rough scribbles to dev-ready Figma.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">02</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6M14 4l-4 16"/></svg></div>
+        <div>
+          <h3 class="display">Frontend Development</h3>
+          <p>Hand-coded HTML/CSS/JS, React, and CMS-driven sites. Performance &amp; accessibility-minded.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">03</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/></svg></div>
+        <div>
+          <h3 class="display">Website Redesign</h3>
+          <p>Audit, restructure, refresh — keeping what works, fixing what doesn't, all without breaking SEO.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">04</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div>
+          <h3 class="display">Shopify Stores</h3>
+          <p>Theme customisation, conversion-optimised PDPs, headless builds. From soft launch to scale.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">05</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+        <div>
+          <h3 class="display">WordPress · Elementor</h3>
+          <p>Premium WP builds with custom blocks, ACF flexibility, and a CMS your client will actually use.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">06</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z" fill="currentColor" stroke="none"/></svg></div>
+        <div>
+          <h3 class="display">Motion Graphics</h3>
+          <p>Brand films, product motion, scroll-driven storytelling. After Effects to GSAP to Lottie.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">07</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M10 9v6l5-3z" fill="currentColor" stroke="none"/></svg></div>
+        <div>
+          <h3 class="display">Video Editing</h3>
+          <p>Premiere-cut reels, explainers, and case-study films — colour-graded, music-matched, on brand.</p>
+        </div>
+      </div>
+      <div class="service reveal-fade" data-cursor="hover">
+        <span class="idx">08</span>
+        <div class="icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" /></svg></div>
+        <div>
+          <h3 class="display">Branding Support</h3>
+          <p>Visual identity, type systems, brand guidelines — embedded with the strategists you already trust.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Testimonials ========== -->
+  
+
+<!-- ========== Contact ========== -->
+<section class="contact" id="contact" data-screen-label="08 Contact">
+  <canvas class="contact-canvas" id="contactCanvas"></canvas>
+  <div class="container">
+    <span class="eyebrow reveal-fade">— 07 / Let's talk</span>
+    <h2 class="display reveal-up" style="margin-top:24px">Let's build something <em>extraordinary.</em></h2>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="block reveal-up">
+          <div class="k">Email · fastest</div>
+          <div class="v"><a href="mailto:bhatuprakahs144@gmail.com" data-cursor="hover">bhatuprakahs144@gmail.com</a></div>
+        </div>
+        <!-- <div class="block reveal-up">
+          <div class="k">On the calendar</div>
+          <div class="v"><a href="#" data-cursor="hover">Book a 30-min intro call →</a></div>
+        </div> -->
+        <div class="block reveal-up">
+          <div class="k">Find me</div>
+          <div class="socials">
+            <a href="https://www.linkedin.com/in/prakash-bhatu?utm_source=share_via&utm_content=profile&utm_medium=member_android" data-cursor="hover">LinkedIn ↗</a>
+            <a href="https://www.behance.net/pixel-craft-studio/info" data-cursor="hover">Behance ↗</a>
+            <!-- <a href="#" data-cursor="hover">Dribbble ↗</a> -->
+            <a href="https://github.com/bhatuprakash3219/Design" data-cursor="hover">GitHub ↗</a>
+            <!-- <a href="#" data-cursor="hover">Read.cv ↗</a> -->
+          </div>
+        </div>
+        <div class="block reveal-up">
+          <!-- <div class="k">Currently</div> -->
+          <!-- <div class="v" style="font-size:18px; color:var(--muted)"><span class="dot" style="display:inline-block; vertical-align:middle; margin-right:10px"></span>Booking projects from June 26, 2026</div> -->
+        </div>
+      </div>
+
+      <form class="contact-form reveal-up" id="contactForm" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="cf-name">Your name</label>
+            <input id="cf-name" name="name" type="text" placeholder="Jane Doe" required />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" placeholder="jane@studio.com" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-project">Project type</label>
+          <select id="cf-project" name="project">
+            <option>UI / UX design</option>
+            <option>Frontend build</option>
+            <option>Shopify storefront</option>
+            <option>WordPress / Elementor</option>
+            <option>Motion / video</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Budget</label>
+          <div class="budget-chips">
+            <input type="radio" name="budget" id="b1" value="<$5k"/><label for="b1">&lt; $5k</label>
+            <input type="radio" name="budget" id="b2" value="$5–15k" checked/><label for="b2">$5–15k</label>
+            <input type="radio" name="budget" id="b3" value="$15–40k"/><label for="b3">$15–40k</label>
+            <input type="radio" name="budget" id="b4" value="$40k+"/><label for="b4">$40k+</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-msg">Tell me about it</label>
+          <textarea id="cf-msg" name="msg" placeholder="A short brief, links to inspiration, target dates — anything you have."></textarea>
+        </div>
+        <div class="form-foot">
+          <small>I reply within 24 hours, Mon–Fri.</small>
+          <button class="btn glow btn-magnet" type="submit" data-cursor="hover">
+            <span id="cfBtn">Send brief</span>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="foot">
+  <div class="container" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; width:100%">
+    <span class="mono">© 2026 — PRAKASH BHATU</span>
+    <span class="mono">DESIGNED + BUILT BY PRAKASH BHATU</span>
+    <!-- <span class="mono">v 1.0 · NO COOKIES, NO BS</span> -->
+  </div>
+</footer>
+
+</main>
+
+<!-- ========== Work case-study modal (Kai Vesper section) ========== -->
+<div class="kv-cs" id="kvCaseModal" aria-hidden="true">
+  <div class="kv-cs-inner">
+    <button class="kv-cs-close" data-kv-close aria-label="Close">&times;</button>
+    <div class="kv-cs-cat" data-kv-cat></div>
+    <h3 class="kv-cs-title" data-kv-title></h3>
+    <p class="kv-cs-tagline" data-kv-tagline></p>
+    <div class="kv-cs-stats" data-kv-stats></div>
+ 
+     <div class="case-description"></div>
+  </div>
+</div>
+
+<!-- ========== Case-study modal ========== -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close" data-cursor="hover"></button>
+    <div class="modal-hero" id="modalHero">
+      <img src="/assets/images/four.png" alt="">
+      <div>
+        <span class="cat" id="modalCat">Category</span>
+        <h3 class="display" id="modalTitle">Project</h3>
+      </div>
+    </div>
+    <div class="modal-body">
+      <aside class="modal-meta">
+        <div class="block"><div class="k">Client</div><div class="v" id="m-client">—</div></div>
+        <div class="block"><div class="k">Year</div><div class="v" id="m-year">—</div></div>
+        <div class="block"><div class="k">Role</div><div class="v" id="m-role">—</div></div>
+        <div class="block"><div class="k">Stack</div><div class="v" id="m-stack">—</div></div>
+        <div class="block"><div class="k">Timeline</div><div class="v" id="m-timeline">—</div></div>
+      </aside>
+      <div class="modal-content" id="modalContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<!-- React + Babel for tweaks panel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- App scripts -->
+<script src="app.js"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+<script>
+  // ================= WORK FILTER =================
+document.documentElement.style.overflow = 'hidden';
+document.body.style.overflow = 'hidden';
+document.querySelectorAll(".filter").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // active state
+    document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const cat = btn.dataset.cat;
+
+    document.querySelectorAll(".work-card").forEach(card => {
+      const match = cat === "all" || card.dataset.cat === cat;
+      card.style.display = match ? "" : "none";
+    });
+  });
+});
+</script>
+
+<!-- Work case-study modal logic (self-contained) -->
+<script>
+(function () {
+  var modal = document.getElementById('kvCaseModal');
+  if (!modal) return;
+
+  var CASES = {
+  pmsapp: {
+  cat: 'Mobile App Design',
+  title: 'iTranscript PMS — Streamlined Workflow Management.',
+  tagline: 'A mobile-first Practice Management System designed to help transcription teams manage jobs, track productivity, and monitor turnaround times from anywhere.',
+
+  stats: [
+    ['Role','UI/UX Designer '],
+    ['Year','2025'],
+    ['Timeline','12 Weeks'],
+    ['Platform','iOS + Android']
+  ],
+
+  description: 'The iTranscript PMS mobile application was designed to give transcription professionals and management teams complete visibility into daily operations. The goal was to transform complex desktop workflows into a simple and intuitive mobile experience that allows users to monitor job status, track productivity, review assignments, and stay connected with ongoing transcription projects in real time.\n\nThe design process focused heavily on usability, speed, and accessibility. Existing workflows were analyzed to identify common bottlenecks, resulting in a streamlined navigation structure and simplified task management experience. Key features include dashboard analytics, job tracking, report monitoring, team productivity insights, notifications, and secure access to sensitive project information.\n\nSpecial attention was given to performance and responsiveness, ensuring users could quickly access critical information whether they were in the office or working remotely. The final product delivers a clean, professional interface that reduces administrative overhead, improves workflow visibility, and helps teams maintain faster turnaround times while managing large volumes of transcription work.\n\nBy combining modern UI patterns with workflow-focused functionality, the PMS app provides a centralized mobile solution for transcription operations, making project management more efficient, transparent, and scalable.'
+},
+    pmsweb: {
+      cat: 'Dashboard UI',
+      title: 'Practice Management System (PMS) Redesign',
+      tagline: 'Transforming a complex clinical system into a clean, scalable SaaS experience.',
+      stats: [
+  ['Role', 'Product Designer'],
+  ['Year', '2024'],
+  ['Timeline', '9 months'],
+  ['Surface', 'Web App'],
+  
+  ['Users', 'Medical Staff'],
+  ['Domain', 'Healthcare '],
+],
+    
+     description:'<p>Designed a modern, scalable redesign of a healthcare Practice Management System used for managing patients, appointments, billing, and AI-based transcription. The goal was to improve usability, reduce cognitive load, and create a cleaner, more efficient workflow for medical staff.</p> <h3>Problem</h3> <p>The existing system was cluttered and hard to navigate, with poor hierarchy and slow workflows that impacted daily medical operations.</p><h3>Goal</h3> <p>Simplify complex workflows, improve navigation clarity, and create a clean, scalable SaaS UI for faster clinical operations.</p><h3>Users</h3><p>Doctors, Admin Staff, Receptionists, Medical Transcription Teams</p> <h3>Approach</h3><ul><li>Audited existing system to identify usability issues</li><li>Rebuilt information architecture</li><li>Designed low-fidelity wireframes for structure</li><li>Created clean SaaS-style UI with better hierarchy and spacing</li></ul><h3>Improvements</h3><ul><li>Cleaner dashboard layout</li><li>Card-based patient & appointment views</li><li>Improved navigation structure</li><li>Reduced visual clutter and cognitive load</li></ul><h3>Key Decision</h3><p>Focused on speed + simplicity over visual complexity to match real-world healthcare workflows.</p><h3>Outcome</h3><p>A modern, scalable dashboard that improves readability, reduces friction, and supports faster daily operations.</p><h3>One-Liner</h3><p>A UX-focused redesign of a healthcare PMS aimed at improving workflow efficiency and usability in clinical environments.</p>'
+    },
+ grove: {
+  cat: 'Brand Identity',
+  title: 'Personal Brand — Visual Identity & Social Presence.',
+  tagline: 'A cohesive personal brand system combining logo design, visual identity, and social media content to create a recognizable and professional digital presence.',
+
+  stats: [
+    ['Role','Brand Designer'],
+    ['Year','2025'],
+    ['Deliverable','Logo + Social Media Design'],
+    ['Tools','Illustrator, Photoshop, Figma']
+  ],
+
+  description: 'This project focused on building a strong and consistent personal brand identity across digital platforms. The objective was to create a visual system that reflects creativity, professionalism, and modern design thinking while remaining flexible enough for social media, portfolio presentations, and marketing materials.\n\nThe process began with logo exploration, typography selection, and color system development to establish a distinctive visual language. Once the core identity was defined, a series of social media templates and promotional graphics were created to maintain consistency across posts and campaigns.\n\nThe design approach emphasized clean layouts, bold typography, and strong visual hierarchy, ensuring that content remains engaging and instantly recognizable. Every asset was crafted to strengthen brand recall while supporting a professional online presence.\n\nThe final deliverables included logo design, brand guidelines, social media post templates, promotional creatives, and supporting visual assets, resulting in a unified identity system that can scale across multiple digital touchpoints.'
+},
+   flyfi: {
+  cat: 'mobile',
+  title: 'FlyFi — Smart Travel Companion App',
+  tagline: 'A seamless airport experience for modern travelers.',
+  stats: [
+    ['Role', 'UI/UX Designer'],
+    ['Year', '2025'],
+    ['Platform', 'iOS + Android'],
+    ['Screens', '22+ Mobile Screens'],
+  ],
+ 
+  description:'<p>Designed the UI/UX for FlyFi, a smart travel companion app focused on simplifying the airport and flight experience through real-time flight tracking, airfare alerts, airport Wi-Fi guidance, and travel insights. The goal was to create a clean, stress-free mobile experience that helps travelers access essential information quickly and efficiently.</p><h3>Problem</h3><p>Travelers often face information overload during their journey, switching between multiple apps to track flights, check airport updates, access Wi-Fi, and manage travel plans. Existing experiences felt cluttered, inconsistent, and difficult to navigate during time-sensitive situations.</p><h3>Goal</h3><p>Design an intuitive mobile experience that centralizes important travel tools and delivers fast, accessible information for smoother airport navigation and travel management.</p><h3>Users</h3><p>Frequent Flyers, Business Travelers, International Travelers, Solo Travelers, Vacation Travelers</p><h3>Approach</h3><ul><li>Researched modern travel app experiences and user pain points</li><li>Structured a simplified information architecture for faster navigation</li><li>Created wireframes focused on usability and quick access to critical actions</li><li>Designed a modern mobile UI with clean layouts, strong hierarchy, and travel-friendly interactions</li></ul><h3>Improvements</h3><ul><li>Simplified flight tracking experience</li><li>Cleaner dashboard and navigation structure</li><li>Improved visibility of travel updates and airport information</li><li>Reduced cognitive load with clear content hierarchy and card-based layouts</li></ul><h3>Key Decision</h3><p>Focused on speed, clarity, and ease of use to support travelers in fast-paced airport environments where quick access to information is essential.</p><h3>Outcome</h3><p>A modern mobile app experience that makes travel information more accessible, improves usability, and creates a smoother airport journey for users.</p><h3>One-Liner</h3><p>A UX-focused travel companion app designed to simplify flight tracking, airport navigation, and real-time travel updates.</p>'
+},
+  halo: {
+  cat: 'Motion Design',
+  title: 'Logo Reveal — Brand Animation.',
+  tagline: 'A clean and modern logo animation designed to bring brand identity to life through motion, timing, and visual storytelling.',
+
+  stats: [
+    ['Role','Motion Designer'],
+    ['Year','2024'],
+    ['Type','Logo Animation'],
+    ['Tools','After Effects']
+  ],
+
+  description: 'This project focused on transforming a static logo into an engaging animated brand asset. The goal was to create a smooth and memorable logo reveal that could be used across websites, social media content, presentations, and promotional videos.\n\nUsing Adobe After Effects, the animation was crafted with careful attention to timing, movement, and visual balance. Subtle transitions, motion principles, and refined easing curves were applied to create a polished and professional result while maintaining the integrity of the original brand identity.\n\nThe animation was designed to enhance brand recognition, improve visual appeal, and provide a more dynamic user experience across digital touchpoints. The final deliverable serves as a versatile branding asset suitable for intros, promotional content, and marketing campaigns.'
+},
+   vesper: {
+  cat: 'Video / Motion Reel',
+  title: 'Personal Motion Reel — Showcase 2025.',
+  tagline: 'A self-directed motion design reel combining logo animations, typography motion, and experimental visuals created in After Effects.',
+
+  stats: [
+    ['Role','Motion Designer + Editor'],
+    ['Year','2024'],
+   
+    ['Tools','After Effects']
+  ],
+
+  description: 'This project is a personal motion design reel created to showcase a range of animation and video editing work produced throughout the year. The reel brings together experimental motion graphics, logo animations, typography sequences, and cinematic transitions into a cohesive visual showcase.\n\nDesigned and edited in Adobe After Effects, the focus was on rhythm, pacing, and visual storytelling. Each segment was crafted to highlight different motion techniques including kinetic typography, smooth transitions, layered compositions, and brand-style animation sequences.\n\nThe objective of the reel was to present a clear creative identity and demonstrate versatility in motion design, from minimal corporate-style animations to more expressive experimental visuals. The final output works as a portfolio highlight for client pitches, personal branding, and creative presentations.'
+},
+ drift: {
+  cat: 'Web App / SaaS Redesign',
+  title: 'iTranscript — Dashboard & Landing Redesign.',
+  tagline: 'A complete redesign of a transcription SaaS homepage focused on clarity, conversion, and improved information hierarchy for enterprise users.',
+
+  stats: [
+    ['Role','Product Designer'],
+    ['Year','2025'],
+    ['Type','Web App Redesign'],
+    ['Focus','UX + UI + Conversion']
+  ],
+
+  description: 'This project involved redesigning the iTranscript homepage and core dashboard experience to improve clarity, trust, and conversion for enterprise transcription users. The original interface contained dense information, unclear hierarchy, and limited visual structure, making it difficult for users to quickly understand product value and navigate key actions.\n\nThe redesign focused on creating a more structured and scalable SaaS layout with a strong emphasis on information architecture, visual hierarchy, and conversion-focused UX patterns. The homepage was restructured to highlight core value propositions, service capabilities, and trust signals, while the dashboard experience was simplified to make analytics, job tracking, and system status more accessible at a glance.\n\nSpecial attention was given to improving readability, reducing cognitive load, and introducing modern dashboard UI patterns such as card-based layouts, clearer typography scales, and modular sections for future scalability. The result is a more intuitive and visually balanced interface that enhances user confidence and supports faster decision-making.\n\nOverall, the redesign transforms a dense enterprise interface into a clean, modern SaaS experience optimized for usability, trust, and business conversion.'
+},
+  };
+
+  function openCase(key) {
+    var c = CASES[key] || CASES.nova;
+    modal.querySelector('[data-kv-cat]').textContent = c.cat;
+    modal.querySelector('[data-kv-title]').textContent = c.title;
+    modal.querySelector('[data-kv-tagline]').textContent = c.tagline;
+   
+   modal.querySelector('.case-description').innerHTML = c.description;
+    modal.querySelector('[data-kv-stats]').innerHTML = c.stats.map(function (kv) {
+      return '<div class="stat"><div class="k">' + kv[0] + '</div><div class="v">' + kv[1] + '</div></div>';
+    }).join('');
+    modal.classList.add('open');
+    modal.scrollTop = 0;
+    if (window.__lenis) window.__lenis.stop();
+  }
+  function closeCase() {
+    modal.classList.remove('open');
+    if (window.__lenis) window.__lenis.start();
+  }
+
+  document.querySelectorAll('#work .work-card[data-case]').forEach(function (card) {
+    card.addEventListener('click', function () { openCase(card.getAttribute('data-case')); });
+  });
+  modal.querySelector('[data-kv-close]').addEventListener('click', closeCase);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeCase(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCase(); });
+})();
+</script>
+
+</body>
+</html>
